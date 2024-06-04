@@ -1,0 +1,36 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+admin_only	Pwn101/pwn103/exp.py	/^admin_only = p64(binary.symbols.admins_only)$/;"	v
+banner	Pwn101/pwn101/vuln.c	/^void banner(){$/;"	f
+leak	Pwn101/pwn107/exp.py	/^leak = p64(int(leak, 16))$/;"	v
+leak	Pwn101/pwn107/exp.py	/^leak = recv.split(': ')[1]$/;"	v
+main	Pwn101/pwn101/vuln.c	/^void main(){$/;"	f
+nops	Pwn101/pwn104/exp.py	/^nops  = b'\\x90'*30$/;"	v
+p	Pwn101/pwn103/exp.py	/^p = remote('10.10.138.109', 9003)$/;"	v
+p	Pwn101/pwn104/exp.py	/^p = process('.\/pwn104-1644300377109.pwn104')$/;"	v
+p	Pwn101/pwn104/exp.py	/^p = remote('10.10.141.199', 9004)$/;"	v
+p	Pwn101/pwn105/exp.py	/^p = process('.\/pwn105-1644300421555.pwn105')$/;"	v
+p	Pwn101/pwn105/exp.py	/^p = remote('10.10.141.199', 9005)$/;"	v
+p	Pwn101/pwn106/exp.py	/^p = process('.\/pwn106-user-1644300441063.pwn106-user')$/;"	v
+p	Pwn101/pwn106/exp.py	/^p = remote('10.10.127.226', 9006)$/;"	v
+p	Pwn101/pwn107/exp.py	/^p = process('.\/pwn107-1644307530397.pwn107')$/;"	v
+pad	Pwn101/pwn102/exp.py	/^pad = b'A'*104$/;"	v
+pad	Pwn101/pwn103/exp.py	/^pad = b'A'*32$/;"	v
+pad	Pwn101/pwn104/exp.py	/^pad = b'A'*(80 - len(nops)-len(shell))$/;"	v
+pad	Pwn101/pwn107/exp.py	/^pad = b'A'*16   #int(argv[1])$/;"	v
+rbp	Pwn101/pwn103/exp.py	/^rbp = b'C'*8$/;"	v
+rbp	Pwn101/pwn104/exp.py	/^rbp = b'B'*8$/;"	v
+recv	Pwn101/pwn106/exp.py	/^recv = p.recv()$/;"	v
+recv	Pwn101/pwn107/exp.py	/^recv = p.recv()$/;"	v
+recv	Pwn101/pwn107/exp.py	/^recv = str(recv).split("\\\\n")[1]$/;"	v
+resp	Pwn101/pwn107/exp.py	/^resp = p.recv()$/;"	v
+ret	Pwn101/pwn104/exp.py	/^ret = int(str(x).split(' ')[-1].strip('\\\\n"'), 16)$/;"	v
+ret_address	Pwn101/pwn103/exp.py	/^ret_address = p64(0x401377)$/;"	v
+setup	Pwn101/pwn101/vuln.c	/^void setup(){$/;"	f
+shell	Pwn101/pwn104/exp.py	/^shell  =  b""$/;"	v
+x	Pwn101/pwn104/exp.py	/^x = p.recv()$/;"	v
+x	Pwn101/pwn106/exp.py	/^x = lambda y : bytes.fromhex(y)[::-1]$/;"	v

